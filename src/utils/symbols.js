@@ -1,3 +1,5 @@
+export const initialSymbols = ['BTCUSDT', 'ETHBTC', 'LTCUSDT', 'XRPUSDT'];
+
 const symbols = [
   'ETHBTC',
   'LTCBTC',
