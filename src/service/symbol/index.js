@@ -15,7 +15,10 @@ export default function SymbolService() {
   const setNewSymbol = (symbol) => {
     dispatch(setSymbol(symbol));
     dispatch(setTickerPriceStore(null));
+    startTickerSocket(symbol);
+  };
 
+  const startTickerSocket = (symbol) => {
     createSocket({
       type: 'ticker',
       symbol: symbol,
@@ -32,18 +35,8 @@ export default function SymbolService() {
     });
   };
 
-  const setTickerPrice = (val) => {
-    dispatch(setTickerPriceStore(val));
-  };
-
-  const setTickerLoading = (val) => {
-    dispatch(setTickerLoadingStore(val));
-  };
-
   return {
     setNewSymbol,
-    setTickerPrice,
-    setTickerLoading,
     ...symbolState,
   };
 }

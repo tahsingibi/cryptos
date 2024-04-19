@@ -1,7 +1,10 @@
 export default function formatCurrency(number, currency = 'USD') {
-  return new Intl.NumberFormat('en-US', {
+  const isCurrency = number?.indexOf('.') > 1.5;
+  const formatted = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
-    minimumFractionDigits: 8,
+    minimumFractionDigits: isCurrency ? 2 : 8,
   }).format(number);
+
+  return isCurrency ? formatted : formatted?.replace('$', '');
 }
