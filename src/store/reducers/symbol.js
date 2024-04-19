@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { defaultSymbol } from '../../config';
+import config from '../../config';
 import createSocket from '../../utils/createSocket';
 
 const initialState = {
-  symbol: defaultSymbol,
+  symbol: config.defaultSymbol,
   ticker: {
-    loading: false,
+    loading: true,
     price: null,
   },
 };
@@ -14,11 +14,13 @@ export const { reducer, actions } = createSlice({
   name: 'symbol',
   initialState,
   reducers: {
+    // SYMBOL
     setSymbol: (state, action) => {
       const newSymbol = action.payload;
       state.symbol = newSymbol;
     },
 
+    // TICKER
     setTickerLoading: (state, action) => {
       state.ticker.loading = action.payload;
     },

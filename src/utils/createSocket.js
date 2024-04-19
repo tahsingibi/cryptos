@@ -1,7 +1,9 @@
-let websocket = null;
+let websocket;
+let lastType;
 
 const socketUrl = {
   ticker: (symbol) => `wss://stream.binance.com:9443/ws/${symbol}@ticker`,
+  kline: (symbol) => `wss://stream.binance.com:9443/ws/${symbol}@kline_1m`,
 };
 
 export default function createSocket({
@@ -15,9 +17,10 @@ export default function createSocket({
   const getUrl = socketUrl[type];
   const wsUrl = getUrl(symbol);
 
-  if (websocket) websocket.close();
+  if (websocket && type === lastType) websocket.close();
 
   websocket = new WebSocket(wsUrl);
+  lastType = type;
 
   websocket.onopen = function (e) {
     onOpen(e);

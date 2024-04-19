@@ -1,6 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { reducer as appReducer } from './reducers/app';
 import {
+  reducer as chartReducer,
+  initializeKLineSocketOnLoad,
+} from './reducers/chart';
+
+import {
   reducer as symbolReducer,
   initializeTickerSocketOnLoad,
 } from './reducers/symbol';
@@ -10,6 +15,7 @@ export function createStore(preloadedState = {}) {
     reducer: {
       app: appReducer,
       symbol: symbolReducer,
+      chart: chartReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -23,3 +29,4 @@ export function createStore(preloadedState = {}) {
 
 export const store = createStore();
 store.dispatch(initializeTickerSocketOnLoad());
+store.dispatch(initializeKLineSocketOnLoad());

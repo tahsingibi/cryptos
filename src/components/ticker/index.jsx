@@ -66,7 +66,7 @@ function Loader() {
   return (
     <div className="flex gap-2 animate-pulse">
       <ArrowPathIcon className="size-6 animate-spin !text-zinc-400" />
-      <span className="!text-zinc-400">Fetching value...</span>
+      <span className="!text-zinc-400">Loading...</span>
     </div>
   );
 }

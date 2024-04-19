@@ -1,12 +1,10 @@
 import React from 'react';
-import Symbolbox from '../../components/smybolbox';
-import PriceTicker from '../../components/ticker';
+import SymbolChart from '../../components/chart';
 
 export default function Homepage() {
   return (
-    <div className='flex gap-4 items-center'>
-      <Symbolbox />
-      <PriceTicker />
+    <div className="grid grid-cols-12 gap-4 items-center">
+      <SymbolChart />
     </div>
   );
 }
