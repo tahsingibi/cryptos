@@ -25,15 +25,21 @@ const trends = {
 let before;
 
 export default function PriceTicker() {
-  const { price, loading } = useSelector((state) => state.symbol.ticker);
+  const { ticker, symbol } = useSelector((state) => state.symbol);
+  const { price, loading } = ticker;
 
   if (!price) before = null;
 
   const trending = price > before ? 'up' : price === before ? 'equal' : 'down';
+  const isUSD = symbol.indexOf('usd') > 2;
 
   const prices = {
-    before: formatCurrency(before),
-    last: formatCurrency(price),
+    before: isUSD
+      ? formatCurrency(before)
+      : formatCurrency(before).replace('$', ''),
+    last: isUSD
+      ? formatCurrency(price)
+      : formatCurrency(price).replace('$', ''),
   };
 
   const Icon = trends[trending].icon;
@@ -41,7 +47,9 @@ export default function PriceTicker() {
   before = price;
 
   return (
-    <div className={`flex items-center text-lg  ${trends[trending].className}`}>
+    <div
+      className={`flex items-center text-lg slashed-zero ${trends[trending].className}`}
+    >
       {price && !loading ? (
         <>
           <Icon className="size-8 transition-all" />

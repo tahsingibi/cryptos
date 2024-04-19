@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { reducer as appReducer } from './reducers/app';
 import {
   reducer as symbolReducer,
-  initializeSocketOnLoad,
+  initializeTickerSocketOnLoad,
 } from './reducers/symbol';
 
 export function createStore(preloadedState = {}) {
@@ -22,4 +22,4 @@ export function createStore(preloadedState = {}) {
 }
 
 export const store = createStore();
-store.dispatch(initializeSocketOnLoad());
+store.dispatch(initializeTickerSocketOnLoad());

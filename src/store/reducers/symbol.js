@@ -29,7 +29,7 @@ export const { reducer, actions } = createSlice({
   },
 });
 
-export const initializeSocket = () => (dispatch, getState) => {
+export const initializeTickerSocket = () => (dispatch, getState) => {
   const { symbol } = getState().symbol;
   createSocket({
     type: 'ticker',
@@ -47,6 +47,6 @@ export const initializeSocket = () => (dispatch, getState) => {
   });
 };
 
-export const initializeSocketOnLoad = () => (dispatch) => {
-  dispatch(initializeSocket());
+export const initializeTickerSocketOnLoad = () => (dispatch) => {
+  dispatch(initializeTickerSocket());
 };

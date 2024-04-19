@@ -6,5 +6,5 @@ export default function formatCurrency(number, currency = 'USD') {
     minimumFractionDigits: isCurrency ? 2 : 8,
   }).format(number);
 
-  return isCurrency ? formatted : formatted?.replace('$', '');
+  return formatted;
 }
