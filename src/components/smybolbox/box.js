@@ -1,9 +1,9 @@
 import React from 'react';
-import SymbolService from '../../service/symbol';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import AppService from '../../services/app';
 
 export default function SearchboxInput() {
-  const { symbol } = SymbolService();
+  const { symbol } = AppService();
   return (
     <div className="relative group ">
       <input

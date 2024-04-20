@@ -2,20 +2,24 @@ import { configureStore } from '@reduxjs/toolkit';
 import { reducer as appReducer } from './reducers/app';
 import {
   reducer as chartReducer,
-  initializeKLineSocketOnLoad,
+  initializeChartOnLoad,
 } from './reducers/chart';
-
 import {
-  reducer as symbolReducer,
+  reducer as tickerReducer,
   initializeTickerSocketOnLoad,
-} from './reducers/symbol';
+} from './reducers/ticker';
+import {
+  reducer as bookReducer,
+  initializeBookSocketOnLoad,
+} from './reducers/book';
 
 export function createStore(preloadedState = {}) {
   const store = configureStore({
     reducer: {
       app: appReducer,
-      symbol: symbolReducer,
+      ticker: tickerReducer,
       chart: chartReducer,
+      book: bookReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -28,5 +32,7 @@ export function createStore(preloadedState = {}) {
 }
 
 export const store = createStore();
+
 store.dispatch(initializeTickerSocketOnLoad());
-store.dispatch(initializeKLineSocketOnLoad());
+store.dispatch(initializeChartOnLoad());
+store.dispatch(initializeBookSocketOnLoad());

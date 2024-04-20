@@ -1,11 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { MinusIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
+import TickerService from '../../services/ticker';
+import AppService from '../../services/app';
 import formatCurrency from '../../utils/formatCurrency';
-import {
-  MinusIcon,
-  ChevronUpIcon,
-  ArrowPathIcon,
-} from '@heroicons/react/20/solid';
+import Loader from '../loader';
 
 const trends = {
   up: {
@@ -23,12 +21,11 @@ const trends = {
 };
 
 let before;
-
 export default function PriceTicker() {
-  const { ticker, symbol } = useSelector((state) => state.symbol);
-  const { price, loading } = ticker;
+  const { symbol } = AppService();
+  const { price, loading } = TickerService();
 
-  if (!price) before = null;
+  if (loading) before = null;
 
   const trending = price > before ? 'up' : price === before ? 'equal' : 'down';
   const isUSD = symbol.indexOf('usd') > 2;
@@ -42,13 +39,12 @@ export default function PriceTicker() {
       : formatCurrency(price).replace('$', ''),
   };
 
-  const Icon = trends[trending].icon;
-
   before = price;
+  const Icon = trends[trending].icon;
 
   return (
     <div
-      className={`flex items-center text-lg slashed-zero ${trends[trending].className}`}
+      className={`flex items-center flex-1 shrink-0  text-lg slashed-zero relative ${trends[trending].className}`}
     >
       {price && !loading ? (
         <>
@@ -58,15 +54,6 @@ export default function PriceTicker() {
       ) : (
         <Loader />
       )}
-    </div>
-  );
-}
-
-function Loader() {
-  return (
-    <div className="flex gap-2 animate-pulse">
-      <ArrowPathIcon className="size-6 animate-spin !text-zinc-400" />
-      <span className="!text-zinc-400">Loading...</span>
     </div>
   );
 }

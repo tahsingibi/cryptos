@@ -4,7 +4,7 @@ import PriceTicker from '../ticker';
 
 export default function Header() {
   return (
-    <header className="flex flex-col gap-4 sm:flex-row sm:items-center ">
+    <header className="flex gap-4 items-center flex-wrap">
       <Symbolbox />
       <PriceTicker />
     </header>

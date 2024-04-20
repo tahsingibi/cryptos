@@ -1,50 +1,65 @@
 import { createSlice } from '@reduxjs/toolkit';
-import createSocket from '../../utils/createSocket';
 import config from '../../config';
+import fetchApi from '../../utils/fetchApi';
+import timeOutCalc from '../../utils/timeout';
+import chartDataFormat from '../../utils/chartDataFormat';
 
 const initialState = {
-  chart: {
-    loading: true,
-    per: config.chart.per,
-    data: null,
-  },
+  loading: true,
+  per: config.chart.per,
+  data: null,
+  socket: null,
 };
 
 export const { reducer, actions } = createSlice({
   name: 'chart',
   initialState,
   reducers: {
-    //CHART
-    setChartLoading: (state, action) => {
-      state.chart.loading = action.payload;
+    setLoadingStore: (state, action) => {
+      state.loading = action.payload;
     },
-    setChartPer: (state, action) => {
-      state.chart.per = action.payload;
+
+    setPerStore: (state, action) => {
+      state.per = action.payload;
     },
-    setChartData: (state, action) => {
-      state.chart.data = action.payload;
+
+    setDataStore: (state, action) => {
+      state.data = action.payload;
+    },
+
+    setSocketStore: (state, action) => {
+      state.socket = action.payload;
     },
   },
 });
 
-export const initializeKLineSocket = () => (dispatch, getState) => {
-  const { symbol } = getState().symbol;
-  createSocket({
-    type: 'kline',
-    symbol: symbol,
-    onClose: () => {
-      dispatch(actions.setChartLoading(true));
-    },
-    onError: () => {
-      dispatch(actions.setChartLoading(true));
-    },
-    onMessage: (value) => {
-      dispatch(actions.setChartLoading(false));
-      dispatch(actions.setChartData(value));
-    },
-  });
+export const initializeChartData = () => async (dispatch, getState) => {
+  const symbol = getState().app.symbol;
+  const per = getState().chart.per;
+  const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${per}&limit=500`;
+
+  async function setData() {
+    dispatch(actions.setLoadingStore(true));
+    dispatch(actions.setDataStore(null));
+
+    const { result } = await fetchApi({ url });
+
+    const format = chartDataFormat(result);
+
+    dispatch(actions.setDataStore(format));
+    dispatch(actions.setLoadingStore(false));
+  }
+
+  await setData();
+
+  const timeoutFunction = setTimeout(
+    async () => await setData(),
+    timeOutCalc[per]
+  );
+
+  dispatch(actions.setSocketStore(timeoutFunction));
 };
 
-export const initializeKLineSocketOnLoad = () => (dispatch) => {
-  dispatch(initializeKLineSocket());
+export const initializeChartOnLoad = () => (dispatch) => {
+  dispatch(initializeChartData());
 };

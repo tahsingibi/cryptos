@@ -4,7 +4,7 @@ import Box from './box';
 
 export default function Symbolbox() {
   return (
-    <div className="group relative w-full sm:w-fit">
+    <div className="group relative w-fit ">
       <Box />
       <List />
     </div>

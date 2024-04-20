@@ -1,17 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
+import config from '../../config';
 
 const initialState = {
-  app: {
-    ready: false,
-  },
+  symbol: config.defaultSymbol,
 };
 
 export const { reducer, actions } = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setReady: (state, action) => {
-      state.app.ready = action.payload;
+    setSymbolStore: (state, action) => {
+      state.symbol = action.payload;
     },
   },
 });

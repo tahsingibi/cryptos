@@ -1,41 +1,42 @@
-let websocket;
-let lastType;
+import config from '../config';
 
-const socketUrl = {
-  ticker: (symbol) => `wss://stream.binance.com:9443/ws/${symbol}@ticker`,
-  kline: (symbol) => `wss://stream.binance.com:9443/ws/${symbol}@kline_1m`,
+const dataUrls = {
+  ticker: (symbol) =>
+    `wss://stream.binance.com:9443/ws/${symbol?.toLowerCase()}@ticker`,
+  kline: (symbol, per) =>
+    `wss://stream.binance.com:9443/ws/${symbol?.toLowerCase()}@kline_${per}`,
+  book: (symbol) =>
+    `wss://stream.binance.com:9443/ws/${symbol?.toLowerCase()}@depth`,
 };
 
 export default function createSocket({
   symbol,
   type = 'ticker',
+  per = config.chart.per,
   onOpen = () => {},
   onClose = () => {},
   onMessage = () => {},
   onError = () => {},
 }) {
-  const getUrl = socketUrl[type];
-  const wsUrl = getUrl(symbol);
+  const getUrl = dataUrls[type];
+  const wsUrl = getUrl(symbol, per);
 
-  if (websocket && type === lastType) websocket.close();
+  let websocket = new WebSocket(wsUrl);
 
-  websocket = new WebSocket(wsUrl);
-  lastType = type;
-
-  websocket.onopen = function (e) {
-    onOpen(e);
+  websocket.onopen = function (data) {
+    onOpen({ data, websocket });
   };
 
-  websocket.onmessage = function (e) {
-    const value = JSON.parse(e.data);
-    onMessage(value);
+  websocket.onmessage = function (data) {
+    const value = JSON.parse(data.data);
+    onMessage({ data: value, websocket });
   };
 
-  websocket.onclose = function (e) {
-    onClose(e);
+  websocket.onclose = function (data) {
+    onClose({ data, websocket });
   };
 
-  websocket.onerror = function (e) {
-    onError(e);
+  websocket.onerror = function (data) {
+    onError({ data, websocket });
   };
 }
