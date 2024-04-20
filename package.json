@@ -1,5 +1,5 @@
 {
-  "name": "cyrpto",
+  "name": "crypto",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,7 +10,6 @@
     "@testing-library/user-event": "^13.5.0",
     "apexcharts": "^3.48.0",
     "helmet": "^7.1.0",
-    "lightweight-charts": "^4.1.3",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",

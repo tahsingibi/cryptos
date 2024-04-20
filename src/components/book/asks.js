@@ -1,7 +1,7 @@
 import React from 'react';
 import BookService from '../../services/book';
 import Loader from '../loader';
-import formatCurrency from '../../utils/formatCurrency';
+import Virtualbox from '../virtualbox';
 
 export default function Asks() {
   const { asks, loading } = BookService();
@@ -12,24 +12,7 @@ export default function Asks() {
       {isLoading ? (
         <Loader className="bg-zinc-900 absolute inset-0 h-full w-full flex items-center justify-center" />
       ) : (
-        <div className="flex flex-col gap-2 w-full">
-          <div className="grid grid-cols-12 gap sticky top-0 bg-zinc-950 inset-0 p-2">
-            <div className="col-span-6 uppercase">Asks</div>
-            <div className="col-span-6 uppercase">Quantity</div>
-          </div>
-          {asks.map((item, i) => {
-            const currency = formatCurrency(item[0]);
-            const qty = formatCurrency(item[1])
-              ?.replace('$', '')
-              .replace('.00', '');
-            return (
-              <div key={i} className="grid grid-cols-12 gap-2 px-2">
-                <div className="col-span-6">{currency}</div>
-                <div className="col-span-6">{qty}</div>
-              </div>
-            );
-          })}
-        </div>
+        <Virtualbox data={asks} title="Asks" />
       )}
     </div>
   );

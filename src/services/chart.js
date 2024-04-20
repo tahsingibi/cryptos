@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { actions } from '../store/reducers/chart';
-import fetchApi from '../utils/fetchApi';
+import { getKline } from '../utils/fetchApi';
 import timeOutCalc from '../utils/timeout';
 import chartDataFormat from '../utils/chartDataFormat';
 
@@ -25,13 +25,12 @@ export default function ChartService() {
 
     const symbol = newSymbol || activeSymbol;
     const per = newPer || chartState.per;
-    const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${per}&limit=500`;
 
     async function setData() {
       dispatch(setLoadingStore(true));
       dispatch(setDataStore(null));
 
-      const { result } = await fetchApi({ url });
+      const { result } = await getKline({ symbol, per });
 
       const format = chartDataFormat(result);
       dispatch(setDataStore(format));

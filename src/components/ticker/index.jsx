@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MinusIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 import TickerService from '../../services/ticker';
 import AppService from '../../services/app';
@@ -28,19 +28,21 @@ export default function PriceTicker() {
   if (loading) before = null;
 
   const trending = price > before ? 'up' : price === before ? 'equal' : 'down';
-  const isUSD = symbol.indexOf('usd') > 2;
+  const isUSD = symbol?.toLowerCase().indexOf('usd') > 2;
 
-  const prices = {
-    before: isUSD
-      ? formatCurrency(before)
-      : formatCurrency(before).replace('$', ''),
-    last: isUSD
-      ? formatCurrency(price)
-      : formatCurrency(price).replace('$', ''),
-  };
+  const lastPrice = isUSD
+    ? formatCurrency(price)
+    : formatCurrency(price).replace('$', '');
 
-  before = price;
   const Icon = trends[trending].icon;
+
+  useEffect(() => {
+    const timeout = setTimeout(() => (before = price), 1000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [price]);
 
   return (
     <div
@@ -49,7 +51,7 @@ export default function PriceTicker() {
       {price && !loading ? (
         <>
           <Icon className="size-8 transition-all" />
-          {prices.last}
+          {lastPrice}
         </>
       ) : (
         <Loader />

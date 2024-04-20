@@ -1,5 +1,5 @@
 import React from 'react';
-import Symbolbox from '../smybolbox';
+import Symbolbox from '../symbolbox';
 import PriceTicker from '../ticker';
 
 export default function Header() {

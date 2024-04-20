@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import createSocket from '../../utils/createSocket';
-import fetchApi from '../../utils/fetchApi';
+import { getDepth } from '../../utils/fetchApi';
 const initialState = {
   socket: null,
   bids: null,
@@ -19,26 +19,33 @@ export const { reducer, actions } = createSlice({
       state.loading = action.payload;
     },
     setBidsStore: (state, action) => {
-      state.bids = action.payload;
+      state.bids =
+        action.payload?.length > 50
+          ? action.payload.slice(0, 50)
+          : action.payload;
     },
     setAsksStore: (state, action) => {
-      state.asks = action.payload;
+      state.asks =
+        action.payload?.length > 50
+          ? action.payload.slice(0, 50)
+          : action.payload;
     },
   },
 });
 
-let lists = {
-  asks: null,
-  bids: null,
+let beforeValues = {
+  asks: [],
+  bids: [],
 };
 export const initializeBookSocket = () => async (dispatch, getState) => {
   const symbol = getState().app.symbol;
   const bookSocket = getState().book.socket;
 
-  const url = `https://api.binance.com/api/v3/depth?symbol=${symbol}&limit=100`;
-  const { result } = await fetchApi({ url });
+  const { result } = await getDepth({ symbol });
 
   const { asks, bids } = result;
+  beforeValues.asks = asks;
+  beforeValues.bids = bids;
 
   dispatch(actions.setLoadingStore(true));
 
@@ -50,10 +57,11 @@ export const initializeBookSocket = () => async (dispatch, getState) => {
       dispatch(actions.setSocketStore(websocket));
     },
     onMessage: ({ data, websocket }) => {
-      const _bids = [...data.b, ...bids];
-      const _asks = [...data.a, ...asks];
-      lists.asks = _asks;
-      lists.bids = _bids;
+      const _bids = [...data.b, ...beforeValues.bids];
+      const _asks = [...data.a, ...beforeValues.asks];
+      beforeValues.asks = _asks;
+      beforeValues.bids = _bids;
+
       dispatch(actions.setLoadingStore(false));
       dispatch(actions.setBidsStore(_bids));
       dispatch(actions.setAsksStore(_asks));

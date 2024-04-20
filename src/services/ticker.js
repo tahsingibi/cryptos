@@ -5,24 +5,29 @@ import createSocket from '../utils/createSocket';
 export default function TickerService() {
   const tickerState = useSelector((state) => state.ticker);
   const { socket } = tickerState;
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
 
-  const { setLoadingStore, setPriceStore, setSocketStore } = actions;
+  const { setLoadingStore, setPriceStore, setSocketStore, setBeforeStore } =
+    actions;
 
   function newSocket(symbol) {
     socket?.close();
-    dispath(setLoadingStore(true));
-    dispath(setPriceStore(null));
+    dispatch(setLoadingStore(true));
+    dispatch(setPriceStore(null));
 
+    let before;
     createSocket({
       symbol,
       type: 'ticker',
       onOpen: ({ data, websocket }) => {
-        dispath(setSocketStore(websocket));
+        dispatch(setSocketStore(websocket));
       },
       onMessage: ({ data, websocket }) => {
-        dispath(setLoadingStore(false));
-        dispath(setPriceStore(data.c));
+        dispatch(setLoadingStore(false));
+        dispatch(setBeforeStore(before));
+
+        before = data.c;
+        dispatch(setPriceStore(data.c));
       },
     });
   }

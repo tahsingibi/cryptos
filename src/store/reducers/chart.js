@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import config from '../../config';
-import fetchApi from '../../utils/fetchApi';
+import { getKline } from '../../utils/fetchApi';
 import timeOutCalc from '../../utils/timeout';
 import chartDataFormat from '../../utils/chartDataFormat';
 
@@ -36,13 +36,12 @@ export const { reducer, actions } = createSlice({
 export const initializeChartData = () => async (dispatch, getState) => {
   const symbol = getState().app.symbol;
   const per = getState().chart.per;
-  const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${per}&limit=500`;
 
   async function setData() {
     dispatch(actions.setLoadingStore(true));
     dispatch(actions.setDataStore(null));
 
-    const { result } = await fetchApi({ url });
+    const { result } = await getKline({ symbol, per });
 
     const format = chartDataFormat(result);
 

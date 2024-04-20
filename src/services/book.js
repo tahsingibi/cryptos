@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { actions } from '../store/reducers/book';
 import createSocket from '../utils/createSocket';
-import fetchApi from '../utils/fetchApi';
+import { getDepth } from '../utils/fetchApi';
 
 export default function BookService() {
   const bookState = useSelector((state) => state.book);
@@ -15,10 +15,17 @@ export default function BookService() {
     socket?.close();
     dispatch(setLoadingStore(true));
 
-    const url = `https://api.binance.com/api/v3/depth?symbol=${symbol}&limit=100`;
-    const { result } = await fetchApi({ url });
+    let beforeValues = {
+      asks: null,
+      bids: null,
+    };
+
+    const { result } = await getDepth({ symbol });
 
     const { asks, bids } = result;
+
+    beforeValues.asks = asks;
+    beforeValues.bids = bids;
 
     createSocket({
       symbol,
@@ -27,11 +34,15 @@ export default function BookService() {
         dispatch(setSocketStore(websocket));
       },
       onMessage: ({ data, websocket }) => {
-        const _bids = data.b;
-        const _asks = data.a;
+        const _bids = [...data.b, ...beforeValues.bids];
+        const _asks = [...data.a, ...beforeValues.asks];
+
+        beforeValues.asks = _asks;
+        beforeValues.bids = _bids;
+
         dispatch(setLoadingStore(false));
-        dispatch(setBidsStore(bids, _bids));
-        dispatch(setAsksStore(asks, _asks));
+        dispatch(setBidsStore(_bids));
+        dispatch(setAsksStore(_asks));
       },
     });
   }

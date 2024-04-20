@@ -5,6 +5,7 @@ const initialState = {
   loading: true,
   price: null,
   socket: null,
+  before: null,
 };
 
 export const { reducer, actions } = createSlice({
@@ -17,6 +18,10 @@ export const { reducer, actions } = createSlice({
 
     setPriceStore: (state, action) => {
       state.price = action.payload;
+    },
+
+    setBeforeStore: (state, action) => {
+      state.before = action.payload;
     },
 
     setSocketStore: (state, action) => {
