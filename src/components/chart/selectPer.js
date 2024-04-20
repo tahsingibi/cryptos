@@ -10,15 +10,15 @@ export default function SelectPer() {
   const isActive = (activePer) => per === activePer;
 
   return (
-    <div className="flex gap-1 p-2">
+    <div className="flex gap-1 p-2 absolute z-10">
       {pers.map((item, i) => {
         const isActivePer = isActive(item);
-        const activeClassName = isActivePer ? '!bg-zinc-800 text-zinc-200' : '';
+        const activeClassName = isActivePer ? '!bg-zinc-400 !text-white' : '';
         const handleClick = () => setPer(item);
         return (
           <button
             key={i}
-            className={`text-sm bg-zinc-900/50 hover:bg-zinc-900 transition-all text-zinc-500 px-2 py-0.5 rounded ${activeClassName}`}
+            className={`text-sm bg-zinc-200 hover:bg-zinc-300 transition-all text-zinc-600 px-2 py-0.5 rounded ${activeClassName}`}
             onClick={handleClick}
             disabled={isActivePer}
           >

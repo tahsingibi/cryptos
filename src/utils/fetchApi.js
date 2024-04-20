@@ -24,7 +24,10 @@ export default async function fetchApi({
 }
 
 export async function getDepth({ symbol }) {
-  const url = `https://api.binance.com/api/v3/depth?symbol=${symbol}&limit=25`;
+  const url = `https://api.binance.com/api/v3/depth?symbol=${symbol?.replace(
+    '/',
+    ''
+  )}&limit=25`;
 
   const { result, error } = await fetchApi({ url });
 
@@ -32,7 +35,10 @@ export async function getDepth({ symbol }) {
 }
 
 export async function getKline({ symbol, per }) {
-  const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${per}&limit=500`;
+  const url = `https://api.binance.com/api/v3/klines?symbol=${symbol?.replace(
+    '/',
+    ''
+  )}&interval=${per}&limit=500`;
 
   const { result, error } = await fetchApi({ url });
 

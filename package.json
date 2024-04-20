@@ -10,6 +10,8 @@
     "@testing-library/user-event": "^13.5.0",
     "apexcharts": "^3.48.0",
     "helmet": "^7.1.0",
+    "lightweight-charts": "^4.1.3",
+    "lightweight-charts-react-wrapper": "^2.1.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",

@@ -40,9 +40,9 @@ export default function BookService() {
         beforeValues.asks = _asks;
         beforeValues.bids = _bids;
 
-        dispatch(setLoadingStore(false));
         dispatch(setBidsStore(_bids));
         dispatch(setAsksStore(_asks));
+        dispatch(setLoadingStore(false));
       },
     });
   }

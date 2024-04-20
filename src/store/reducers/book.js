@@ -19,16 +19,16 @@ export const { reducer, actions } = createSlice({
       state.loading = action.payload;
     },
     setBidsStore: (state, action) => {
-      state.bids =
-        action.payload?.length > 50
-          ? action.payload.slice(0, 50)
-          : action.payload;
+      const bids = action.payload?.filter(
+        (item) => +item[0] > 0 && +item[1] > 0
+      );
+      state.bids = bids?.length > 50 ? bids.slice(0, 50) : bids;
     },
     setAsksStore: (state, action) => {
-      state.asks =
-        action.payload?.length > 50
-          ? action.payload.slice(0, 50)
-          : action.payload;
+      const asks = action.payload?.filter(
+        (item) => +item[0] > 0 && +item[1] > 0
+      );
+      state.asks = asks?.length > 50 ? asks.slice(0, 50) : asks;
     },
   },
 });
@@ -62,9 +62,9 @@ export const initializeBookSocket = () => async (dispatch, getState) => {
       beforeValues.asks = _asks;
       beforeValues.bids = _bids;
 
-      dispatch(actions.setLoadingStore(false));
       dispatch(actions.setBidsStore(_bids));
       dispatch(actions.setAsksStore(_asks));
+      dispatch(actions.setLoadingStore(false));
     },
   });
 };

@@ -9,7 +9,7 @@ export default function SearchboxInput() {
       <input
         readOnly
         placeholder={symbol}
-        className="placeholder:!text-white  placeholder:text-xl !px-4 pt-3 !flex !items-center !justify-center align-middle placeholder:uppercase"
+        className=" placeholder:text-xl !px-4 pt-3 !flex !items-center !justify-center align-middle placeholder:uppercase"
       />
       <ChevronDownIcon className="h-6 w-6 text-gray-500 absolute right-4 top-1/2 -translate-y-1/2 opacity-10 group-hover:opacity-100 transition-all " />
     </div>

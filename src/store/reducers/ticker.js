@@ -44,8 +44,8 @@ export const initializeTickerSocket = () => (dispatch, getState) => {
       dispatch(actions.setSocketStore(websocket));
     },
     onMessage: ({ data, websocket }) => {
-      dispatch(actions.setLoadingStore(false));
       dispatch(actions.setPriceStore(data.c));
+      dispatch(actions.setLoadingStore(false));
     },
   });
 };

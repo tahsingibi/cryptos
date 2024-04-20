@@ -2,11 +2,17 @@ import config from '../config';
 
 const dataUrls = {
   ticker: (symbol) =>
-    `wss://stream.binance.com:9443/ws/${symbol?.toLowerCase()}@ticker`,
+    `wss://stream.binance.com:9443/ws/${symbol
+      ?.toLowerCase()
+      ?.replace('/', '')}@ticker`,
   kline: (symbol, per) =>
-    `wss://stream.binance.com:9443/ws/${symbol?.toLowerCase()}@kline_${per}`,
+    `wss://stream.binance.com:9443/ws/${symbol
+      ?.toLowerCase()
+      ?.replace('/', '')}@kline_${per}`,
   book: (symbol) =>
-    `wss://stream.binance.com:9443/ws/${symbol?.toLowerCase()}@depth`,
+    `wss://stream.binance.com:9443/ws/${symbol
+      ?.toLowerCase()
+      ?.replace('/', '')}@depth`,
 };
 
 export default function createSocket({

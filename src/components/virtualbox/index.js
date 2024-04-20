@@ -3,7 +3,7 @@ import formatCurrency from '../../utils/formatCurrency';
 export default function Virtualbox({ data = [], title }) {
   return (
     <div className="flex flex-col gap-2 w-full ">
-      <div className="grid grid-cols-12 gap sticky top-0 bg-zinc-950 inset-0 p-2">
+      <div className="grid grid-cols-12 gap sticky top-0 bg-zinc-200 inset-0 p-2">
         <div className="col-span-6 uppercase">{title}</div>
         <div className="col-span-6 uppercase ">Quantity</div>
       </div>

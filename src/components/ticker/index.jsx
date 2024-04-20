@@ -7,15 +7,15 @@ import Loader from '../loader';
 
 const trends = {
   up: {
-    className: 'text-green-600',
+    className: '!text-green-600',
     icon: ChevronUpIcon,
   },
   down: {
-    className: 'text-red-600 [&>svg]:-rotate-180',
+    className: '!text-red-600 [&>svg]:-rotate-180',
     icon: ChevronUpIcon,
   },
   equal: {
-    className: 'text-inherit',
+    className: '!text-inherit',
     icon: MinusIcon,
   },
 };

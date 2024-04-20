@@ -1,5 +1,9 @@
+import { initialSymbols } from '../utils/symbols';
+
+const defaultSymbol = initialSymbols[0];
+
 const config = {
-  defaultSymbol: 'BTCUSDT',
+  defaultSymbol: defaultSymbol,
   chart: {
     per: '1m',
     data: null,
